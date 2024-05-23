@@ -142,6 +142,38 @@ Logging in using these gave:
   ![Image 32](https://github.com/DarkLord0708/Secy_Task/blob/main/writeup_resources/IMG-20240519-WA0040.jpg)
 
 The last flag is hidden in a binary named `whathash`.
+I used `checksec --file=whathash`:
+
+![Image 33](https://github.com/DarkLord0708/Secy_Task/blob/main/writeup_resources/WhatsApp%20Image%202024-05-23%20at%2017.56.45_6191f445.jpg)
+
+this gave us that the binary is PIE executable and has NX enabled, so the stack is not executable and because its PIE (Position Independent Executable) its base pointer's address will be assigned at the time of execution.
+Then I used ghidra to decompile the binary into simpler C code and renamed a few variables so that its more understandable.
+
+![Image 34](https://github.com/DarkLord0708/Secy_Task/blob/main/writeup_resources/WhatsApp%20Image%202024-05-23%20at%2017.56.46_0cda11bb.jpg)
+
+![Image 35](https://github.com/DarkLord0708/Secy_Task/blob/main/writeup_resources/WhatsApp%20Image%202024-05-23%20at%2017.56.46_ab0de8d4.jpg)
+
+![Image 36](https://github.com/DarkLord0708/Secy_Task/blob/main/writeup_resources/WhatsApp%20Image%202024-05-23%20at%2017.56.46_e375c6d0.jpg)
+
+For simplification I made the following flowchart:
+
+![Image 37](https://github.com/DarkLord0708/Secy_Task/blob/main/writeup_resources/WhatsApp%20Image%202024-05-23%20at%2020.16.02_285e7fa0.jpg)
+
+The username and password were being taken into array of size 128 and 'gets' was not being used, I tried to overflow the stack but that didn't work. All I could think of was to leak the address of puts from the Global offset table (GOT). So I opened gdb with pwntools to look at the binary:
+command used:`gdb-pwntools` then `file whathash` and then to disassemble the main function `disass main`.
+
+![Image 38](https://github.com/DarkLord0708/Secy_Task/blob/main/writeup_resources/WhatsApp%20Image%202024-05-23%20at%2017.56.46_339b6227.jpg)
+
+I used `info functions` to see the functions and their addresses:
+
+![Image 39](https://github.com/DarkLord0708/Secy_Task/blob/main/writeup_resources/WhatsApp%20Image%202024-05-23%20at%2017.56.46_a761fb8d.jpg)
+
+but the functions don't have addresses thay have offsets from the base pointer.
+I put breakpoints at main and check, and then used `run` to run the program and used `cyclic 150` to generate a cyclic pattern of 150 size, this gave us the same thing, that the input is 128 at max.
+
+![Image 40](https://github.com/DarkLord0708/Secy_Task/blob/main/writeup_resources/WhatsApp%20Image%202024-05-23%20at%2017.56.46_c5c73633.jpg)
+
+I though there mmight be some kind of variable overflow where I can input some stuff so that I can rewrite the list comparison in 'shachecker' function such that it returns true or i can just return true from the 'check' function, but I couldn't. 
 
 
 
