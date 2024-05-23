@@ -49,6 +49,7 @@ I tried `admin` and `admin` ass username and password and it gave:
 As I know that amansg22 and ritvikg22 are secys of PClub I tried their names as username and surprisingly this gave incorrect password, which means that the usernames are correct:
 
 ![Image 11](https://github.com/DarkLord0708/Secy_Task/blob/main/writeup_resources/IMG-20240519-WA0020.jpg)
+
 ![Image 12](https://github.com/DarkLord0708/Secy_Task/blob/main/writeup_resources/IMG-20240519-WA0022.jpg)
 
 
