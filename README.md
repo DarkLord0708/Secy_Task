@@ -141,5 +141,7 @@ Logging in using these gave:
   
   ![Image 32](https://github.com/DarkLord0708/Secy_Task/blob/main/writeup_resources/IMG-20240519-WA0040.jpg)
 
+The last flag is hidden in a binary named `whathash`.
+
 
 
